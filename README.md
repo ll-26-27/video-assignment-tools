@@ -11,29 +11,28 @@ The first tool is a skill, **`video-assignment-parsing`**:
 ## Layout
 
 ```
-.agents/skills/video-assignment-parsing/   the skill, self-contained
+.claude/skills/video-assignment-parsing/   the skill, self-contained
   SKILL.md                                 what Claude follows
   references/follow-up-questions.md        how to write the questions (first draft, to revise)
   scripts/prepare.mjs                      transcripts, frames, manifest  (Node 20+, ffmpeg; no packages)
   scripts/render.mjs                       questions.json etc. -> HTML
   scripts/lib.mjs                          shared helpers, .env loading
-.claude/skills/video-assignment-parsing    a link to the folder above, so Claude Code finds it
 _videos/                                   student videos go here (gitignored)
 _output/                                   everything made from them (gitignored)
 .env                                       HUIT_OPENAI_API_KEY (gitignored; see .env.example)
 ```
 
-**Why both `.agents/` and `.claude/`:** Claude Code looks for project skills only in `.claude/skills/`; Codex and other agents look in `.agents/skills/`. The skill lives in `.agents/skills/` and `.claude/skills/` holds a symlink to it, The Notebook's convention since October 16. To use the skill in another project, copy the whole `video-assignment-parsing` folder into that project's `.agents/skills/` (and link it from `.claude/skills/`), or into `~/.claude/skills/` for every project; it needs nothing else from this repo except a `.env` at that project's root.
+**Claude only (Marlon, Nov 24):** the people using this work in Claude Code, so the skill lives where Claude Code finds project skills, `.claude/skills/`, and the instructions are in `CLAUDE.md`. To use the skill in another project, copy the whole `video-assignment-parsing` folder into that project's `.claude/skills/`, or into `~/.claude/skills/` for every project; it needs nothing else from this repo except a `.env` at that project's root.
 
 ## Use
 
 Put videos in `_videos/`, open Claude Code here, and ask it to go through the videos (the skill triggers on that), or run the steps yourself from this folder:
 
 ```bash
-node .agents/skills/video-assignment-parsing/scripts/prepare.mjs --dry-run
-node .agents/skills/video-assignment-parsing/scripts/prepare.mjs --language en
+node .claude/skills/video-assignment-parsing/scripts/prepare.mjs --dry-run
+node .claude/skills/video-assignment-parsing/scripts/prepare.mjs --language en
 # Claude writes _output/<slug>/questions.json for each video
-node .agents/skills/video-assignment-parsing/scripts/render.mjs
+node .claude/skills/video-assignment-parsing/scripts/render.mjs
 open _output/index.html
 ```
 

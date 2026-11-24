@@ -7,7 +7,7 @@ description: Parse students' video assignments and draft follow-up questions to 
 
 Student videos go in `_videos/` at the project root; everything this skill makes goes in `_output/<slug>/`. Both folders are gitignored. The skill is self-contained: its scripts are in `scripts/` beside this file, need only Node 20+ and ffmpeg, and read keys from a `.env` at the project root.
 
-Run every command from the project root. `SKILL` below means this skill's folder (in this repo, `.agents/skills/video-assignment-parsing`).
+Run every command from the project root. `SKILL` below means this skill's folder (in this repo, `.claude/skills/video-assignment-parsing`).
 
 ## Student work stays private
 

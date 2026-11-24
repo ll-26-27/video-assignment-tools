@@ -11,7 +11,7 @@ import { tmpdir } from 'node:os'
 import { basename, extname, join, relative, resolve } from 'node:path'
 import { VIDEO_TYPES, clock, fail as quit, loadEnv, mask, pool, probe, runAsync, slugFor } from './lib.mjs'
 
-const HELP = `Usage: node .agents/skills/video-assignment-parsing/scripts/prepare.mjs [video ...] [options]
+const HELP = `Usage: node .claude/skills/video-assignment-parsing/scripts/prepare.mjs [video ...] [options]
 
 Run from the project root (the folder with _videos/ and _output/). With no video named, every
 video under _videos/ is prepared. For each one, writes _output/<slug>/:

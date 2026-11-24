@@ -8,7 +8,7 @@ import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { clock, fail as quit } from './lib.mjs'
 
-const HELP = `Usage: node .agents/skills/video-assignment-parsing/scripts/render.mjs [slug ...] [--root <dir>]
+const HELP = `Usage: node .claude/skills/video-assignment-parsing/scripts/render.mjs [slug ...] [--root <dir>]
 
 Writes _output/<slug>/index.html for each prepared video (or only the slugs named) and
 _output/index.html, the list of all of them. Run from the project root.`
