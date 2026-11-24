@@ -27,9 +27,9 @@ node SKILL/scripts/prepare.mjs --language en      # do it
 node SKILL/scripts/prepare.mjs _videos/one.mov    # just one
 ```
 
-Each video gets `_output/<slug>/` with `manifest.json`, `transcript.json` (HUIT's segments, with start and end in seconds), `transcript.md` (`[mm:ss]` per segment), and `frames/` (12 evenly spaced stills by default; `--frames 20` for more). Reruns skip what is done; `--force` redoes it. Pass `--prompt "names, course terms"` if the transcriber is mangling names.
+Videos are prepared in parallel, up to 8 at a time (`--jobs 4` for fewer, up to 32); within each video the transcription and the stills run at the same time, and each log line starts with the video's slug. Each video gets `_output/<slug>/` with `manifest.json`, `transcript.json` (HUIT's segments, with start and end in seconds), `transcript.md` (`[mm:ss]` per segment), and `frames/` (12 evenly spaced stills by default; `--frames 20` for more). Reruns skip what is done; `--force` redoes it. Pass `--prompt "names, course terms"` if the transcriber is mangling names.
 
-**3. Read each video, then write `questions.json`.** For each `_output/<slug>/`:
+**3. Read each video, then write `questions.json`.** With more than two or three videos, do this in parallel: give each video to its own subagent, in batches of up to 8 at a time, and tell each one its slug, the project root, the assignment prompt if you have it, and to follow steps 1–4 below and this skill's question guide, writing only its own `_output/<slug>/questions.json` and returning a one-line summary. When a batch comes back, check that every `questions.json` parses and has questions, redo any that failed, then start the next batch. With one or two videos, do them yourself. For each `_output/<slug>/`:
 
 1. Read `manifest.json` and `transcript.md` in full.
 2. Look at the frames (read the JPGs). The transcript misses everything visual: titles, B-roll, what's on screen, framing, edits. Say what you saw only if you saw it in a frame.

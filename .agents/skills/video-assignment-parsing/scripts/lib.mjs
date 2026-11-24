@@ -3,7 +3,7 @@
 // The project root is the folder you run the scripts from (it holds _videos/ and _output/);
 // pass --root to point elsewhere. Keys come from the shell first, then <root>/.env.
 
-import { spawnSync } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
@@ -34,16 +34,36 @@ export function fail(script, message) {
   process.exit(1)
 }
 
-export function run(cmd, args) {
-  const r = spawnSync(cmd, args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 })
-  if (r.error?.code === 'ENOENT') throw new Error(`${cmd} is not installed (brew install ffmpeg)`)
-  if (r.status !== 0) throw new Error((r.stderr || `${cmd} exited ${r.status}`).trim().split('\n').slice(-3).join('\n'))
-  return r.stdout
+// Run a command without blocking, so several videos' ffmpeg jobs can run at once.
+export function runAsync(cmd, args) {
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'] })
+    let out = ''
+    let err = ''
+    child.stdout.on('data', d => { out += d })
+    child.stderr.on('data', d => { err += d })
+    child.on('error', e => reject(e.code === 'ENOENT' ? new Error(`${cmd} is not installed (brew install ffmpeg)`) : e))
+    child.on('close', code => (code === 0 ? resolvePromise(out) : reject(new Error((err || `${cmd} exited ${code}`).trim().split('\n').slice(-3).join('\n')))))
+  })
+}
+
+// Run worker(item) over items, at most `limit` at a time; results in the items' order.
+export async function pool(items, limit, worker) {
+  const results = new Array(items.length)
+  let next = 0
+  const lanes = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (next < items.length) {
+      const i = next++
+      results[i] = await worker(items[i], i)
+    }
+  })
+  await Promise.all(lanes)
+  return results
 }
 
 // Duration, picture size, and whether there is sound.
-export function probe(file) {
-  const data = JSON.parse(run('ffprobe', ['-v', 'error', '-show_format', '-show_streams', '-of', 'json', file]))
+export async function probe(file) {
+  const data = JSON.parse(await runAsync('ffprobe',['-v', 'error', '-show_format', '-show_streams', '-of', 'json', file]))
   const streams = data.streams || []
   const video = streams.find(s => s.codec_type === 'video' && !s.disposition?.attached_pic)
   const audio = streams.find(s => s.codec_type === 'audio')

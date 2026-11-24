@@ -4,8 +4,8 @@ Tools for reading students' video assignments and drafting follow-up questions t
 
 The first tool is a skill, **`video-assignment-parsing`**:
 
-1. it transcribes each video through HUIT (Harvard's OpenAI Direct gateway, `whisper-1`) and pulls still frames with ffmpeg;
-2. Claude reads the transcript and frames and writes timestamped follow-up questions, observations, and a short description as JSON, following a question guide;
+1. it transcribes each video through HUIT (Harvard's OpenAI Direct gateway, `whisper-1`) and pulls still frames with ffmpeg, up to 8 videos at a time (`--jobs`);
+2. Claude reads the transcript and frames and writes timestamped follow-up questions, observations, and a short description as JSON, following a question guide, with one subagent per video in batches of up to 8;
 3. a script renders plain HTML pages: the player, the frames, the questions, and the transcript, where any timestamp jumps the video.
 
 ## Layout
