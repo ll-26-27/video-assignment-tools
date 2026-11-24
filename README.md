@@ -1,6 +1,6 @@
 # video-assignment-tools
 
-Tools for reading students' video assignments and drafting follow-up questions to ask each student. Private, created November 24, 2026 as mkuzmick (`ll-26-27/video-assignment-tools`) during the Learning Lab's week 12, and nested in `ll-week-12` at `apps/video-assignment-tools/`.
+Tools for reading students' video assignments and drafting follow-up questions to ask each student. Public (since November 24, 2026; the code and docs only, never student work), created November 24, 2026 as mkuzmick (`ll-26-27/video-assignment-tools`) during the Learning Lab's week 12, and nested in `ll-week-12` at `apps/video-assignment-tools/`.
 
 The first tool is a skill, **`video-assignment-parsing`**:
 
@@ -80,7 +80,7 @@ Useful options for `prepare.mjs`: name one or more files to do only those (`_vid
 
 ### Sample output
 
-These are made from the synthetic test clip (colour bars and a synthesized voice), not from student work. Screenshots of real output show students' faces and words, so they don't go in this repo.
+These are made from the synthetic test clip (colour bars and a synthesized voice), not from student work. Screenshots of real output show students' faces and words, so they never go in this repo, which is public.
 
 The index, `_output/index.html`, lists every video with its thumbnail, length, whether it has a transcript, how many questions, and the summary:
 
