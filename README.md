@@ -80,13 +80,11 @@ Useful options for `prepare.mjs`: name one or more files to do only those (`_vid
 
 ### Sample output
 
-These are made from the synthetic test clip (colour bars and a synthesized voice), not from student work. Screenshots of real output show students' faces and words, so they never go in this repo, which is public.
+The index, `_output/index.html`, lists every video with its thumbnail, length, whether it has a transcript, how many questions, and the summary. This is the index after a test on three informal updates about work at the Bok Center (shown with Marlon's go-ahead, November 24; the videos, transcripts, and questions themselves stay out of the repo):
 
-The index, `_output/index.html`, lists every video with its thumbnail, length, whether it has a transcript, how many questions, and the summary:
+![The index page after a test on three videos: a thumbnail, length, question count, and summary for each](docs/sample-index-three-videos.png)
 
-![The index page: one row for the test clip, with its thumbnail, length, question count, and summary](docs/sample-index.png)
-
-Each video's page has the player and the stills on the left and the summary, questions, moments worth noticing, and anything unsure on the right, with the transcript below. Clicking any timestamp or still jumps the video there:
+Each video's page (this one is the synthetic test clip: colour bars and a synthesized voice) has the player and the stills on the left and the summary, questions, moments worth noticing, and anything unsure on the right, with the transcript below. Clicking any timestamp or still jumps the video there:
 
 ![A video's page: player and stills on the left; summary, timestamped follow-up questions, and observations on the right](docs/sample-video.png)
 
