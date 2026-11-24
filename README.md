@@ -13,9 +13,20 @@ The first tool is a skill, **`video-assignment-parsing`**:
 - **Homebrew:** follow the one-line install at https://brew.sh
 - **Node** (20 or later) and **ffmpeg** (includes ffprobe): `brew install node ffmpeg`
 - **Claude Code:** see https://code.claude.com
-- **A HUIT API key** for OpenAI Direct, from the Harvard API Portal: copy `.env.example` to `.env` and paste it in.
+- **A HUIT API key** for OpenAI Direct, from the Harvard API Portal (see below).
 
 Nothing else: the scripts use no npm packages, so there's no `npm install`. Check with `node --version` and `ffmpeg -version`.
+
+## Your key: `.env`
+
+The transcription step needs your HUIT key in a file called `.env` at the top of this folder (beside this README).
+
+1. Make the file from the example: `cp .env.example .env`
+2. Open it (`code .env` in VS Code, or `open -e .env` in TextEdit) and paste your key after the `=` on the `HUIT_OPENAI_API_KEY=` line, with no spaces or quotes.
+3. Leave `HUIT_OPENAI_BASE_URL` as it is.
+4. Check it: `node .claude/skills/video-assignment-parsing/scripts/prepare.mjs --dry-run` should say `keys from .env` and show the key as `[hidden, N characters]`, not `[NOT SET]`.
+
+`.env` is gitignored, so the key never goes into git. Don't paste it into `.env.example`, which is committed, or into a chat. Files starting with a dot are hidden in Finder; press Cmd-Shift-. to show them.
 
 ## Layout
 
