@@ -1,0 +1,13 @@
+# Keys
+.env
+.env.*
+!.env.example
+
+# Student work and everything made from it: local only, never committed
+_videos/*
+!_videos/README.md
+_output/*
+!_output/README.md
+
+.DS_Store
+node_modules/
