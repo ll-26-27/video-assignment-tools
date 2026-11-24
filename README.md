@@ -56,17 +56,41 @@ grep -rl '\.claude/skills' README.md AGENTS.md .agents | xargs sed -i '' 's#\.cl
 
 `SKILL.md` works as it is. Its parallel step (one subagent per video) assumes Claude Code; Codex can do the videos one after another.
 
-## Use
+## Usage
 
-Put videos in `_videos/`, open Claude Code here, and ask it to go through the videos (the skill triggers on that), or run the steps yourself from this folder:
+1. Put the videos in `_videos/` (`.mov`, `.mp4`, `.m4v`, `.mkv`, `.webm`, `.avi`), loose or in one folder per student.
+2. Open Claude Code in this folder: `claude`
+3. Ask it to go through them, and say what the videos are, since the questions depend on it. For example:
+   - "Go through the videos in `_videos/` and draft follow-up questions. They're the Unit 2 video essays; here's the assignment prompt: …"
+   - "Try the skill on these three. They're informal student updates about work at the Bok Center, so just ask follow-up questions about that work."
+4. Claude transcribes and pulls stills (all the videos at once, up to 8 at a time), reads each transcript and its frames, writes the questions, renders the pages, and tells you where the index is.
+5. Open `_output/index.html` if it isn't open already: `open _output/index.html`
+
+Or run the steps yourself from this folder:
 
 ```bash
-node .claude/skills/video-assignment-parsing/scripts/prepare.mjs --dry-run
-node .claude/skills/video-assignment-parsing/scripts/prepare.mjs --language en
+node .claude/skills/video-assignment-parsing/scripts/prepare.mjs --dry-run       # what it would do
+node .claude/skills/video-assignment-parsing/scripts/prepare.mjs --language en   # transcripts, frames, manifest
 # Claude writes _output/<slug>/questions.json for each video
-node .claude/skills/video-assignment-parsing/scripts/render.mjs
+node .claude/skills/video-assignment-parsing/scripts/render.mjs                  # the HTML pages
 open _output/index.html
 ```
+
+Useful options for `prepare.mjs`: name one or more files to do only those (`_videos/one.mov _videos/two.mov`); `--jobs 4` for fewer at a time; `--frames 20` for more stills; `--prompt "Bok Center, Learning Lab"` when the transcriber mangles names; `--force` to redo what is already done.
+
+### Sample output
+
+These are made from the synthetic test clip (colour bars and a synthesized voice), not from student work. Screenshots of real output show students' faces and words, so they don't go in this repo.
+
+The index, `_output/index.html`, lists every video with its thumbnail, length, whether it has a transcript, how many questions, and the summary:
+
+![The index page: one row for the test clip, with its thumbnail, length, question count, and summary](docs/sample-index.png)
+
+Each video's page has the player and the stills on the left and the summary, questions, moments worth noticing, and anything unsure on the right, with the transcript below. Clicking any timestamp or still jumps the video there:
+
+![A video's page: player and stills on the left; summary, timestamped follow-up questions, and observations on the right](docs/sample-video.png)
+
+On a test with three clips of about 40 seconds each (November 24), the three transcription requests went out within 0.03 seconds of each other and everything was prepared in 4.9 seconds.
 
 ## Privacy
 
