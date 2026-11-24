@@ -8,6 +8,15 @@ The first tool is a skill, **`video-assignment-parsing`**:
 2. Claude reads the transcript and frames and writes timestamped follow-up questions, observations, and a short description as JSON, following a question guide, with one subagent per video in batches of up to 8;
 3. a script renders plain HTML pages: the player, the frames, the questions, and the transcript, where any timestamp jumps the video.
 
+## Install (Mac)
+
+- **Homebrew:** follow the one-line install at https://brew.sh
+- **Node** (20 or later) and **ffmpeg** (includes ffprobe): `brew install node ffmpeg`
+- **Claude Code:** see https://code.claude.com
+- **A HUIT API key** for OpenAI Direct, from the Harvard API Portal: copy `.env.example` to `.env` and paste it in.
+
+Nothing else: the scripts use no npm packages, so there's no `npm install`. Check with `node --version` and `ffmpeg -version`.
+
 ## Layout
 
 ```
@@ -23,6 +32,18 @@ _output/                                   everything made from them (gitignored
 ```
 
 **Claude only (Marlon, Nov 24):** the people using this work in Claude Code, so the skill lives where Claude Code finds project skills, `.claude/skills/`, and the instructions are in `CLAUDE.md`. To use the skill in another project, copy the whole `video-assignment-parsing` folder into that project's `.claude/skills/`, or into `~/.claude/skills/` for every project; it needs nothing else from this repo except a `.env` at that project's root.
+
+**Using Codex (OpenAI) instead:** Codex reads `AGENTS.md` and finds skills in `.agents/skills/`, so rename two things and update the paths:
+
+```bash
+git mv CLAUDE.md AGENTS.md
+mkdir -p .agents/skills
+git mv .claude/skills/video-assignment-parsing .agents/skills/
+rmdir .claude/skills .claude
+grep -rl '\.claude/skills' README.md AGENTS.md .agents | xargs sed -i '' 's#\.claude/skills#.agents/skills#g'
+```
+
+`SKILL.md` works as it is. Its parallel step (one subagent per video) assumes Claude Code; Codex can do the videos one after another.
 
 ## Use
 
